@@ -1,0 +1,54 @@
+﻿@page "/fetchdata"
+
+<PageTitle>DocReport</PageTitle>
+
+@using Reports.Data
+@inject WeatherForecastService ForecastService
+
+<h1>Total de Comprovantes digitalizados hoje</h1>
+
+<p>Atualizado em tempo real.</p>
+
+
+@if (c == null)
+{
+    <p><em>Carregando...</em></p>
+}
+else
+{
+    
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Empresa</th>
+                <th>Total Comprovantes</th>
+                @*<th>Temp. (F)</th>
+                <th>Summary</th>*@
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var contador in c)
+            {
+                <tr>
+                    <td>@contador.Empresa</td>
+                    <td>@contador.TotalComprovantes</td>
+                    @*<td>@forecast.TemperatureF</td>
+                    <td>@forecast.Summary</td>*@
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private WeatherForecast[]? forecasts;
+
+    protected override async Task OnInitializedAsync()
+    {
+        forecasts = await ForecastService.GetForecastAsync(DateTime.Now);
+    }
+
+    
+
+    List<Contadores> c = new API().GetContadores();
+}
